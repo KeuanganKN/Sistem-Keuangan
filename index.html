@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Catatan Keuangan - Klenger Noodles</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans p-6">
+  <div class="max-w-xl mx-auto bg-white p-8 rounded-2xl shadow-md">
+    <h1 class="text-2xl font-bold text-center mb-6">📒 Catatan Keuangan Resto Klenger Noodles</h1>
+    <form id="financeForm" class="space-y-4">
+      <div>
+        <label class="block font-medium">📅 Tanggal Transaksi</label>
+        <input type="date" name="tanggal" class="w-full p-2 border rounded-lg" required />
+      </div>
+
+      <div>
+        <label class="block font-medium">💳 Jenis Transaksi</label>
+        <select name="jenis" class="w-full p-2 border rounded-lg" required>
+          <option value="Pemasukan">Pemasukan</option>
+          <option value="Pengeluaran">Pengeluaran</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block font-medium">💼 Kategori</label>
+        <select name="kategori" class="w-full p-2 border rounded-lg" required>
+          <option value="Jualan">Jualan</option>
+          <option value="Beli Bahan Tani">Beli Bahan Tani</option>
+          <option value="Gaji">Gaji</option>
+          <option value="Reimburse">Reimburse</option>
+          <option value="Lainnya">Lainnya</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block font-medium">💰 Nominal (Rp)</label>
+        <input type="number" name="nominal" class="w-full p-2 border rounded-lg" required />
+      </div>
+
+      <div>
+        <label class="block font-medium">📝 Deskripsi</label>
+        <textarea name="deskripsi" class="w-full p-2 border rounded-lg" rows="3"></textarea>
+      </div>
+
+      <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-xl w-full">
+        Simpan Transaksi
+      </button>
+    </form>
+
+    <div id="successMessage" class="hidden mt-4 text-green-600 text-center">✅ Transaksi berhasil disimpan!</div>
+  </div>
+
+  <script>
+    const form = document.getElementById('financeForm');
+    const message = document.getElementById('successMessage');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const data = {
+        tanggal: form.tanggal.value,
+        jenis: form.jenis.value,
+        kategori: form.kategori.value,
+        nominal: form.nominal.value,
+        deskripsi: form.deskripsi.value
+      };
+
+      try {
+        await fetch("https://script.google.com/macros/s/AKfycbzT9NCu99pTyAMMGG78iy-__ft9wVVx1v2bKo6wvhXaUogUUHNvtjifNB-kYc1uzVlf-w/exec", {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        });
+
+        message.classList.remove("hidden");
+        form.reset();
+      } catch (error) {
+        alert("Gagal menyimpan data. Coba lagi.");
+      }
+    });
+  </script>
+</body>
+</html>
